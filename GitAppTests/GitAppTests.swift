@@ -1,0 +1,17 @@
+//
+//  GitAppTests.swift
+//  GitAppTests
+//
+//  Created by "Khalid Olowe-Makorie, Vodafone" on 02/10/2024.
+//
+
+import Testing
+@testable import GitApp
+
+struct GitAppTests {
+
+    @Test func example() async throws {
+        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    }
+
+}
