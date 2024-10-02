@@ -6,7 +6,7 @@
 //
 
 import Testing
-@testable import GitApp
+@testable import GHFollowers
 
 struct GitAppTests {
 

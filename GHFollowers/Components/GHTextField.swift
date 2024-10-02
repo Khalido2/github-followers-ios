@@ -10,7 +10,7 @@ import UIKit
 class GHTextField: UITextField {
 
     override init(frame: CGRect) {
-        super.init(frame: <#T##CGRect#>)
+        super.init(frame: frame)
         configure()
     }
     
