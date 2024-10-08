@@ -33,7 +33,7 @@
 		FC9151792CAD593100D6624C /* Exceptions for "GHFollowers" folder in "GHFollowers" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Support/Info.plist,
+				Info.plist,
 			);
 			target = FC9150FC2CAD35C800D6624C /* GHFollowers */;
 		};
