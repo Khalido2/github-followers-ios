@@ -9,7 +9,8 @@ import Foundation
 
 //when using codable, the struct variables must match the json response of the api
 
-struct Follower: Codable {
+struct Follower: Codable, Hashable {
     var login: String
     var avatarUrl: String
 }
+ 
