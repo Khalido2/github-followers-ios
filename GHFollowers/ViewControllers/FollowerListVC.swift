@@ -18,14 +18,16 @@ class FollowerListVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         // Do any additional setup after loading the view.
         
-        NetworkManager.shared.getFollowers(for: username, page: 1) { followers, errorMessage in
-            guard let followers = followers else {
-                self.presentGHAlertOnMainThread(title: "Error", message: errorMessage!.rawValue, buttonTitle: "Ok")
-                return
-            }
+        NetworkManager.shared.getFollowers(for: username, page: 1) { result in
             
-            print("Followers.count = \(followers.count)")
-            print(followers)
+            switch result {
+                
+            case .success(let followers):
+                print(followers)
+                    
+            case.failure(let error):
+                self.presentGHAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
+            }
         }
     }
     
