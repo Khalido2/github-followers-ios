@@ -6,19 +6,21 @@
 //
 
 //Singleton
-import Foundation
+import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
-    let baseURL = "https://api.github.com/users/"
-    let itemsPerPage: Int = 100
+    static let itemsPerPage: Int = 100
+    
+    private let baseURL = "https://api.github.com/users/"
+    let avatarCache = NSCache<NSString, UIImage>() //cache for the avatars
     
     private init() {}
     
     //for the escaping its that the completed will output either an array of Follower if it succeeds or a string for an error if it fails
         //both optional as it might be either or
     func getFollowers(for username: String, page: Int, completed: @escaping (Result<[Follower], GHError>) -> Void) {
-        let endpoint = baseURL + "\(username)/followers?per_page=\(itemsPerPage)&page=\(page)"
+        let endpoint = baseURL + "\(username)/followers?per_page=\(NetworkManager.itemsPerPage)&page=\(page)"
         
         guard let url = URL(string: endpoint) else {
             completed(.failure(.invalidUsername))
