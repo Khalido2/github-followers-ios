@@ -129,6 +129,7 @@ extension UserInfoVC: UserInfoVCDelegate, WKUIDelegate {
         
         /*
          //Using Web kit webview
+         //requires the parent view to be designed for it to better slot it
         let webConfiguration = WKWebViewConfiguration()
         let webView = WKWebView(frame: view.bounds, configuration: webConfiguration)
         

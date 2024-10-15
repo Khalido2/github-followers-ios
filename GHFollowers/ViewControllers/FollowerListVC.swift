@@ -95,6 +95,9 @@ class FollowerListVC: UIViewController {
         collectionView.backgroundColor = .systemBackground
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
         collectionView.delegate = self
+        
+        let favButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(FavouritesButtonTapped))
+        navigationItem.rightBarButtonItem = favButton
     }
     
     //This function effectively configures the datasource to know what type the cells will be and how it will intialise and configure them
@@ -116,6 +119,33 @@ class FollowerListVC: UIViewController {
             self.dataSource.apply(snapshot, animatingDifferences: true)
         }
         
+    }
+    
+    @objc func FavouritesButtonTapped() {
+        showLoadingView()
+        
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+            guard let self = self else { return }
+            self.dismissLoadingView()
+            
+            switch result {
+            case .success(let user):
+                let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                
+                PersistenceManager.update(with: favourite, actionType: .add) { [weak self] error in
+                    guard let self = self else { return }
+                    guard let error = error else { //when error is nil aka succesful operation
+                        self.presentGHAlertOnMainThread(title: "Success!", message: "User succesfully favourited.", buttonTitle: "Yay")
+                        return
+                    }
+                    
+                    self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+                }
+                
+            case .failure(let error):
+                self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+            }
+        }
     }
 }
 
