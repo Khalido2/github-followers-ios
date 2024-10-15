@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 //uikit includes foundation
 
 fileprivate var containerView: UIView!
@@ -56,5 +57,11 @@ extension UIViewController {
         let emptyStateView = GHEmptyStateView(message: message)
         emptyStateView.frame = view.bounds //so that view fills whole screen (has been initialised with .zero)
         view.addSubview(emptyStateView)
+    }
+    
+    func presentSafariVC(with url: URL){
+        let safaricVC = SFSafariViewController(url: url)
+        safaricVC.preferredControlTintColor = .systemGreen
+        present(safaricVC, animated: true)
     }
 }
