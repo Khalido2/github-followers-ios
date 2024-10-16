@@ -8,7 +8,7 @@
 import UIKit
 
 class FollowerCell: UICollectionViewCell {
-    static let reuseID = "followerCell"
+    static let reuseID = "FollowerCell"
     
     let avatarImageView = GHAvatarImageView(frame: .zero) //can give a .zero frame cos we'll handle it all with constraints
     let usernameLabel = GHTitleLabel(textAlignment: .center, fontSize: 16)
