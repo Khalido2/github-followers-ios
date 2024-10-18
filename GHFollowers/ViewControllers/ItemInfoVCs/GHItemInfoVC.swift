@@ -15,7 +15,6 @@ class GHItemInfoVC: UIViewController {
     let actionButtom = GHButton()
     
     var user: User!
-    weak var delegate: UserInfoVCDelegate!
     
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
@@ -59,8 +58,7 @@ class GHItemInfoVC: UIViewController {
         
         let padding:CGFloat = 20
         
-        view.addSubview(stackView)
-        view.addSubview(actionButtom)
+        view.addSubviews(stackView, actionButtom)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         

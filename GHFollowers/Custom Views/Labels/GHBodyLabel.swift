@@ -25,7 +25,10 @@ class GHBodyLabel: UILabel {
     
     private func configure () {
         textColor = .secondaryLabel
-        font = UIFont.preferredFont(forTextStyle: .body)
+        
+        font = UIFont.preferredFont(forTextStyle: .body) //these 2 lines make body text conform to dynamic type
+        adjustsFontForContentSizeCategory = true
+        
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.75 //shrink upt o 75%
         lineBreakMode = .byWordWrapping

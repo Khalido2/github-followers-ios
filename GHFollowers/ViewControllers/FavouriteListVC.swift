@@ -97,20 +97,18 @@ extension FavouriteListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return } //we only care about return for this feature
         
-        let favourite = favourites[indexPath.row]
-        favourites.remove(at: indexPath.row)
-        
-        PersistenceManager.update(with: favourite, actionType: .remove) { [weak self] error in
+        PersistenceManager.update(with: favourites[indexPath.row], actionType: .remove) { [weak self] error in
             guard let self = self else {return}
-            
             guard let error = error else {
+                
+                self.favourites.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .left)
                 return
             }
             
             self.presentGHAlertOnMainThread(title: "This favourite could not be deleted", message: error.rawValue, buttonTitle: "Ok")
         }
         
-        tableView.deleteRows(at: [indexPath], with: .left)
     }
     
 }

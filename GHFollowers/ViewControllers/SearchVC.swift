@@ -65,12 +65,6 @@ class SearchVC: UIViewController {
         
         let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE ? 20 : 80
         
-        if DeviceTypes.isiPhoneSE {
-            print("Ihpone SE")
-        }
-        
-        print("\(UIDevice.current.model)")
-        
         logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
         
         logoImageViewTopConstraint.isActive = true

@@ -9,9 +9,9 @@ import UIKit
 import WebKit
 
 protocol UserInfoVCDelegate: AnyObject {
-    func didTapGitHubProfile(user: User)
-    func didTapGetFollowers(user: User)
+    func didRequestFollowers(for username: String)
 }
+
 
 class UserInfoVC: GHDataLoadingVC {
     
@@ -22,7 +22,7 @@ class UserInfoVC: GHDataLoadingVC {
     let dateLabel = GHBodyLabel(textAlignment: .center)
     
     var username: String!
-    weak var delegate: FollowerListVCDelegate!
+    weak var delegate: UserInfoVCDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,11 +54,8 @@ class UserInfoVC: GHDataLoadingVC {
     
     func configureUIElements(with user:User){
         
-        let repoItemVC = GHRepoItemVC(user: user)
-        repoItemVC.delegate = self
-        
-        let followerItemVC = GHFollowerItemVC(user: user)
-        followerItemVC.delegate = self
+        let repoItemVC = GHRepoItemVC(user: user, delegate: self)
+        let followerItemVC = GHFollowerItemVC(user: user, delegate: self)
         
         self.add(childVC: GHUserInfoHeaderVC(user: user), to: self.headerView)
         self.add(childVC: repoItemVC, to: self.itemViewOne)
@@ -88,7 +85,7 @@ class UserInfoVC: GHDataLoadingVC {
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            headerView.heightAnchor.constraint(equalToConstant: 180),
+            headerView.heightAnchor.constraint(equalToConstant: 210),
             
             itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
@@ -97,7 +94,7 @@ class UserInfoVC: GHDataLoadingVC {
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
             
             dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18)
+            dateLabel.heightAnchor.constraint(equalToConstant: 50)
             
         ])
     }
@@ -115,7 +112,7 @@ class UserInfoVC: GHDataLoadingVC {
 
 }
 
-extension UserInfoVC: UserInfoVCDelegate, WKUIDelegate {
+extension UserInfoVC: RepoItemVCDelegate, WKUIDelegate {
     
     func didTapGitHubProfile(user: User) {
         
@@ -141,7 +138,10 @@ extension UserInfoVC: UserInfoVCDelegate, WKUIDelegate {
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)*/
     }
-    
+}
+
+extension UserInfoVC: FollowerItemVCDelegate {
+
     func didTapGetFollowers(user: User) {
         
         guard user.followers > 0 else {
@@ -154,3 +154,4 @@ extension UserInfoVC: UserInfoVCDelegate, WKUIDelegate {
         dismissVC()
     }
 }
+
