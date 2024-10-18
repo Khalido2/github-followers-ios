@@ -13,6 +13,8 @@ class SearchVC: UIViewController {
     let usernameTextField = GHTextField()
     let callToAction = GHButton(backgroundColour: .systemGreen, title: "Get Followers")
     
+    var logoImageViewTopConstraint: NSLayoutConstraint!
+    
     var isUsernameEntered: Bool {
         return !usernameTextField.text!.isEmpty
     }
@@ -40,15 +42,18 @@ class SearchVC: UIViewController {
         guard isUsernameEntered else {
             presentGHAlertOnMainThread(title: "Empty Username", message: "Please enter a username.", buttonTitle: "Ok")
             return }
+    
         
-        let followerListVC = FollowerListVC()
-        followerListVC.username = usernameTextField.text
-        followerListVC.title = usernameTextField.text
+        let followerListVC = FollowerListVC(username: usernameTextField.text!)
+        
+        usernameTextField.resignFirstResponder()
+        usernameTextField.text = ""
+        
         navigationController?.pushViewController(followerListVC, animated: true)
     }
     
     func createDissmissKeyboardTapGesture() {
-        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing ))
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing ))
         view.addGestureRecognizer(tap)
     }
    
@@ -56,10 +61,21 @@ class SearchVC: UIViewController {
         view.addSubview(logoImageView)
         
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(named: "gh-logo")!
+        logoImageView.image = UIImage(named: Images.logo)
+        
+        let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE ? 20 : 80
+        
+        if DeviceTypes.isiPhoneSE {
+            print("Ihpone SE")
+        }
+        
+        print("\(UIDevice.current.model)")
+        
+        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
+        
+        logoImageViewTopConstraint.isActive = true
         
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
             logoImageView.widthAnchor.constraint(equalToConstant: 200)

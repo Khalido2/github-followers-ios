@@ -1,16 +1,13 @@
 //
-//  GHAvatarImageView.swift
+//  GHAlertContainerView.swift
 //  GHFollowers
 //
-//  Created by "Khalid Olowe-Makorie, Vodafone" on 08/10/2024.
+//  Created by "Khalid Olowe-Makorie, Vodafone" on 17/10/2024.
 //
 
 import UIKit
 
-class GHAvatarImageView: UIImageView {
-    
-    let placeholderImage = UIImage(named: Images.placeholderImage)
-    let cache = NetworkManager.shared.avatarCache
+class GHAlertContainerView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,10 +19,10 @@ class GHAvatarImageView: UIImageView {
     }
     
     private func configure() {
+        backgroundColor = .systemBackground
         layer.cornerRadius = 10
-        clipsToBounds = true
-        image = placeholderImage
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
         translatesAutoresizingMaskIntoConstraints = false
     }
-
 }

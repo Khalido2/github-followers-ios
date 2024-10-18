@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavouriteListVC: UIViewController {
+class FavouriteListVC: GHDataLoadingVC {
     
     let tableView = UITableView()
     var favourites: [Follower] = []
@@ -17,11 +17,13 @@ class FavouriteListVC: UIViewController {
         configureVC()
         configureTableView()
        // getFavourites()
+        print("on load")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getFavourites()
+        print("on appear")
     }
     
     func getFavourites() {
@@ -81,18 +83,13 @@ extension FavouriteListVC: UITableViewDelegate, UITableViewDataSource {
         let favourite = favourites[indexPath.row]
         cell.set(favourite: favourite)
         
-        print("\(favourite.login) with \(favourite.avatarUrl)")
-        
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let favourite = favourites[indexPath.row]
-        let destVC = FollowerListVC()
-        
-        destVC.username = favourite.login
-        destVC.title = favourite.login
+        let destVC = FollowerListVC(username: favourite.login)
         
         navigationController?.pushViewController(destVC, animated: true)
     }
