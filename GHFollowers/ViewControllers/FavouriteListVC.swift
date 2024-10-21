@@ -16,7 +16,6 @@ class FavouriteListVC: GHDataLoadingVC {
         super.viewDidLoad()
         configureVC()
         configureTableView()
-       // getFavourites()
         print("on load")
     }
     
@@ -32,21 +31,24 @@ class FavouriteListVC: GHDataLoadingVC {
             
             switch result {
             case .success(let favourites):
-                
-                if favourites.isEmpty {
-                    showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen", in: self.view)
-                }else{
-                    self.favourites = favourites
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        self.view.bringSubviewToFront(self.tableView) //ensures table view is shown above empty state in case both active
-                    }
-                }
+                updateUI(with: favourites)
                 
             case .failure(let error):
                 self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
             }
             
+        }
+    }
+    
+    func updateUI(with favourites: [Follower]){
+        if favourites.isEmpty {
+            showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen", in: self.view)
+        }else{
+            self.favourites = favourites
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.view.bringSubviewToFront(self.tableView) //ensures table view is shown above empty state in case both active
+            }
         }
     }
     
@@ -68,11 +70,11 @@ class FavouriteListVC: GHDataLoadingVC {
         navigationController?.navigationBar.prefersLargeTitles = true //put large title
         view.backgroundColor = .systemBackground
     }
-    
 }
 
 
 extension FavouriteListVC: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favourites.count
     }

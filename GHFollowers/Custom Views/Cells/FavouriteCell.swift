@@ -25,19 +25,13 @@ class FavouriteCell: UITableViewCell {
     
     func set(favourite: Follower) {
         usernameLabel.text = favourite.login
-        NetworkManager.shared.downloadImage(from: favourite.avatarUrl) { [weak self] image in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.avatarImageView.image = image
-            }
-        }
+        avatarImageView.downloadAvatarImage(fromURL: favourite.avatarUrl)
     }
     
     private func configure() {
-        addSubviews(avatarImageView, usernameLabel)
-    
-        accessoryType = .disclosureIndicator
         let padding: CGFloat = 12
+        addSubviews(avatarImageView, usernameLabel)
+        accessoryType = .disclosureIndicator
         
         NSLayoutConstraint.activate([
             avatarImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),//center in the cell

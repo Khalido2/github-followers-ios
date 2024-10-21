@@ -55,7 +55,6 @@ class GHItemInfoVC: UIViewController {
     }
     
     private func layoutUI(){
-        
         let padding:CGFloat = 20
         
         view.addSubviews(stackView, actionButtom)
@@ -74,5 +73,4 @@ class GHItemInfoVC: UIViewController {
             actionButtom.heightAnchor.constraint(equalToConstant: 54),
         ])
     }
-        
 }

@@ -47,6 +47,4 @@ class GHDataLoadingVC: UIViewController {
         emptyStateView.frame = view.bounds //so that view fills whole screen (has been initialised with .zero)
         view.addSubview(emptyStateView)
     }
-    
-
 }

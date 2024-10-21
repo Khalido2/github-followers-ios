@@ -15,11 +15,8 @@ struct User: Codable {
     var bio: String?
     let publicRepos: Int
     let publicGists: Int
-    
     let followers: Int
     let following: Int
-    
     let createdAt: Date
-    
     let htmlUrl: String 
 }

@@ -74,27 +74,30 @@ class FollowerListVC: GHDataLoadingVC {
             switch result {
                 
             case .success(let followers):
+                self.updateUI(with: followers)
                 
-                if followers.count < NetworkManager.itemsPerPage { self.hasMoreFollowers = false }
-                
-                self.followers.append(contentsOf: followers)
-                
-                if(self.followers.isEmpty){
-                    let message = "This user does not have any followers."
-                    DispatchQueue.main.async {
-                        self.showEmptyStateView(with: message, in: self.view)
-                    }
-                    return
-                }
-                
-                self.updateData(on: self.followers)
-                    
             case.failure(let error):
                 self.presentGHAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
             }
             
             isLoadingMoreFollowers = false
         }
+    }
+    
+    func updateUI(with followers: [Follower]){
+        if followers.count < NetworkManager.itemsPerPage { self.hasMoreFollowers = false }
+        
+        self.followers.append(contentsOf: followers)
+        
+        if(self.followers.isEmpty){
+            let message = "This user does not have any followers."
+            DispatchQueue.main.async {
+                self.showEmptyStateView(with: message, in: self.view)
+            }
+            return
+        }
+        
+        self.updateData(on: self.followers)
     }
     
     func configureCollectionView(){
@@ -139,21 +142,25 @@ class FollowerListVC: GHDataLoadingVC {
             
             switch result {
             case .success(let user):
-                let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
-                
-                PersistenceManager.update(with: favourite, actionType: .add) { [weak self] error in
-                    guard let self = self else { return }
-                    guard let error = error else { //when error is nil aka succesful operation
-                        self.presentGHAlertOnMainThread(title: "Success!", message: "User succesfully favourited.", buttonTitle: "Yay")
-                        return
-                    }
-                    
-                    self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
-                }
+                addUserToFavourites(user: user)
                 
             case .failure(let error):
                 self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
             }
+        }
+    }
+    
+    func addUserToFavourites(user: User){
+        let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+        
+        PersistenceManager.update(with: favourite, actionType: .add) { [weak self] error in
+            guard let self = self else { return }
+            guard let error = error else { //when error is nil aka succesful operation
+                self.presentGHAlertOnMainThread(title: "Success!", message: "User succesfully favourited.", buttonTitle: "Yay")
+                return
+            }
+            
+            self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
         }
     }
 }
@@ -188,8 +195,7 @@ extension FollowerListVC: UICollectionViewDelegate {
 }
 
 extension FollowerListVC: UISearchResultsUpdating {
-    
-    
+
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text, !filter.isEmpty else {
             isSearching = false
@@ -221,7 +227,5 @@ extension FollowerListVC: UserInfoVCDelegate {
         
         getFollowers(username: username, page: currentPage)
     }
-    
-    
 }
 

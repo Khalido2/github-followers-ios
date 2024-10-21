@@ -12,7 +12,6 @@ protocol UserInfoVCDelegate: AnyObject {
     func didRequestFollowers(for username: String)
 }
 
-
 class UserInfoVC: GHDataLoadingVC {
     
     let headerView = UIView()
@@ -53,7 +52,6 @@ class UserInfoVC: GHDataLoadingVC {
     }
     
     func configureUIElements(with user:User){
-        
         let repoItemVC = GHRepoItemVC(user: user, delegate: self)
         let followerItemVC = GHFollowerItemVC(user: user, delegate: self)
         
@@ -64,7 +62,6 @@ class UserInfoVC: GHDataLoadingVC {
     }
     
     func layoutUI(){
-        
         let padding: CGFloat = 20
         let itemHeight: CGFloat = 180
         
@@ -115,7 +112,6 @@ class UserInfoVC: GHDataLoadingVC {
 extension UserInfoVC: RepoItemVCDelegate, WKUIDelegate {
     
     func didTapGitHubProfile(user: User) {
-        
         guard let url = URL(string: user.htmlUrl) else {
             presentGHAlertOnMainThread(title: "Invalid URL", message: "URL attached to this user is invalid.", buttonTitle: "Ok")
             return
@@ -143,7 +139,6 @@ extension UserInfoVC: RepoItemVCDelegate, WKUIDelegate {
 extension UserInfoVC: FollowerItemVCDelegate {
 
     func didTapGetFollowers(user: User) {
-        
         guard user.followers > 0 else {
             presentGHAlertOnMainThread(title: "No Followers", message: "This user has no followers ☹️.", buttonTitle: "Ah man..")
             return
