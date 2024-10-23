@@ -159,8 +159,8 @@ class FollowerListVC: GHDataLoadingVC {
 
         
         PersistenceManager.update(with: favourite, actionType: .add) { [weak self] error in
-            guard let self = self else { return }
-            guard let error = error else { //when error is nil aka succesful operation
+            guard let self else { return }
+            guard let error else { //when error is nil aka succesful operation
                 DispatchQueue.main.async {
                     self.presentGHAlert(title: "Success!", message: "User succesfully favourited.", buttonTitle: "Yay")
                 }
