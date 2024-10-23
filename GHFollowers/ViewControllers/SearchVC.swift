@@ -11,7 +11,7 @@ class SearchVC: UIViewController {
 
     let logoImageView = UIImageView()
     let usernameTextField = GHTextField()
-    let callToAction = GHButton(backgroundColour: .systemGreen, title: "Get Followers")
+    let callToAction = GHButton(backgroundColour: .systemGreen, title: "Get Followers", systemImageName: "person.3")
     
     var isUsernameEntered: Bool {
         return !usernameTextField.text!.isEmpty
@@ -37,7 +37,7 @@ class SearchVC: UIViewController {
     @objc func pushFollowerListVC() {
         
         guard isUsernameEntered else {
-            presentGHAlertOnMainThread(title: "Empty Username", message: "Please enter a username.", buttonTitle: "Ok")
+            presentGHAlert(title: "Empty Username", message: "Please enter a username.", buttonTitle: "Ok")
             return }
     
         

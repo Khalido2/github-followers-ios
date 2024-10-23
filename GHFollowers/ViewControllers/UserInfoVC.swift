@@ -32,15 +32,16 @@ class UserInfoVC: GHDataLoadingVC {
     }
     
     func getUserInfo(){
-        NetworkManager.shared.getUserInfo(for: username) {[weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-                case .success(let user):
-                    DispatchQueue.main.async { self.configureUIElements(with: user)}
-                    
-                case .failure(let error):
-                    self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+        Task {
+            do {
+                let user = try await NetworkManager.shared.getUserInfo(for: username)
+                configureUIElements(with: user)
+            } catch {
+                if let ghError = error as? GHError {
+                    presentGHAlert(title: "Something went wrong", message: ghError.rawValue, buttonTitle: "Ok")
+                }else {
+                    presentDefaultError()
+                }
             }
         }
     }
@@ -113,7 +114,7 @@ extension UserInfoVC: RepoItemVCDelegate, WKUIDelegate {
     
     func didTapGitHubProfile(user: User) {
         guard let url = URL(string: user.htmlUrl) else {
-            presentGHAlertOnMainThread(title: "Invalid URL", message: "URL attached to this user is invalid.", buttonTitle: "Ok")
+            presentGHAlert(title: "Invalid URL", message: "URL attached to this user is invalid.", buttonTitle: "Ok")
             return
         }
         
@@ -140,7 +141,7 @@ extension UserInfoVC: FollowerItemVCDelegate {
 
     func didTapGetFollowers(user: User) {
         guard user.followers > 0 else {
-            presentGHAlertOnMainThread(title: "No Followers", message: "This user has no followers ☹️.", buttonTitle: "Ah man..")
+            presentGHAlert(title: "No Followers", message: "This user has no followers ☹️.", buttonTitle: "Ah man..")
             return
         }
         

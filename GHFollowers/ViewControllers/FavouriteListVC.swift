@@ -16,13 +16,11 @@ class FavouriteListVC: GHDataLoadingVC {
         super.viewDidLoad()
         configureVC()
         configureTableView()
-        print("on load")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getFavourites()
-        print("on appear")
     }
     
     func getFavourites() {
@@ -34,7 +32,7 @@ class FavouriteListVC: GHDataLoadingVC {
                 updateUI(with: favourites)
                 
             case .failure(let error):
-                self.presentGHAlertOnMainThread(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+                self.presentGHAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
             }
             
         }
@@ -108,7 +106,7 @@ extension FavouriteListVC: UITableViewDelegate, UITableViewDataSource {
                 return
             }
             
-            self.presentGHAlertOnMainThread(title: "This favourite could not be deleted", message: error.rawValue, buttonTitle: "Ok")
+            self.presentGHAlert(title: "This favourite could not be deleted", message: error.rawValue, buttonTitle: "Ok")
         }
         
     }

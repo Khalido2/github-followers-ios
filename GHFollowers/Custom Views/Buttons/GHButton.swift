@@ -19,21 +19,28 @@ class GHButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(backgroundColour: UIColor, title: String){
+    convenience init(backgroundColour: UIColor, title: String, systemImageName: String){
         self.init(frame: .zero)
-        self.backgroundColor = backgroundColour
-        self.setTitle(title, for: .normal)
+        set(backgroundColour: backgroundColour, title: title, systemImageName: systemImageName)
     }
     
     private func configure() {
-        layer.cornerRadius = 10
+        configuration = .filled()
+        configuration?.cornerStyle = .medium
+
         setTitleColor(.white, for: .normal)
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
         translatesAutoresizingMaskIntoConstraints = false //use auto layout
     }
     
-    func set(backgroundColour: UIColor, title: String){
-        self.backgroundColor = backgroundColour
-        self.setTitle(title, for: .normal)
+    final func set(backgroundColour: UIColor, title: String, systemImageName: String){
+        
+        configuration?.baseBackgroundColor = backgroundColour
+        configuration?.baseForegroundColor = .white
+        configuration?.title = title
+        
+        configuration?.image = UIImage(systemName: systemImageName)
+        configuration?.imagePadding = 6
+        configuration?.imagePlacement = .leading
     }
 }

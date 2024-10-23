@@ -9,7 +9,7 @@ import UIKit
 
 class FavouriteCell: UITableViewCell {
 
-    static let reuseID = "FavouriteCell"
+    static let reuseID = "favouriteCell"
     
     let avatarImageView = GHAvatarImageView(frame: .zero) //can give a .zero frame cos we'll handle it all with constraints
     let usernameLabel = GHTitleLabel(textAlignment: .left, fontSize: 26)
