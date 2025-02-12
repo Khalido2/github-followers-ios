@@ -58,7 +58,7 @@ class SearchVC: UIViewController {
         view.addSubview(logoImageView)
         
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = UIImage(named: Images.logo)
+        logoImageView.image = Images.logo
         
         let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE ? 20 : 80
         
@@ -101,3 +101,5 @@ extension  SearchVC: UITextFieldDelegate {
         return true
     }
 }
+
+#Preview { SearchVC() }

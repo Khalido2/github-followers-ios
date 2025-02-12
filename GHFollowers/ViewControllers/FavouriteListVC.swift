@@ -18,6 +18,18 @@ class FavouriteListVC: GHDataLoadingVC {
         configureTableView()
     }
     
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if favourites.isEmpty {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "star")
+            config.text = "No Favourites"
+            config.secondaryText = "Favourite a user to add to this screen."
+            contentUnavailableConfiguration = config
+        } else{
+            contentUnavailableConfiguration = nil
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getFavourites()
@@ -39,7 +51,16 @@ class FavouriteListVC: GHDataLoadingVC {
     }
     
     func updateUI(with favourites: [Follower]){
-        if favourites.isEmpty {
+        
+        self.favourites = favourites
+        setNeedsUpdateContentUnavailableConfiguration() //notifies view controller to run updateContentUnavailableConfiguration function
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.view.bringSubviewToFront(self.tableView) //ensures table view is shown above empty state in case both active
+        }
+        
+        //Using custom empty state
+        /*if favourites.isEmpty {
             showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen", in: self.view)
         }else{
             self.favourites = favourites
@@ -47,7 +68,7 @@ class FavouriteListVC: GHDataLoadingVC {
                 self.tableView.reloadData()
                 self.view.bringSubviewToFront(self.tableView) //ensures table view is shown above empty state in case both active
             }
-        }
+        }*/
     }
     
     func configureTableView(){
@@ -103,9 +124,7 @@ extension FavouriteListVC: UITableViewDelegate, UITableViewDataSource {
                 
                 self.favourites.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .left)
-                if favourites.isEmpty {
-                    showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen", in: self.view)
-                }
+                setNeedsUpdateContentUnavailableConfiguration()
                 return
             }
             

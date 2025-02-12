@@ -91,5 +91,10 @@ class GHAlertVC: UIViewController {
     @objc func dismissVC() {
         dismiss(animated: true)
     }
+    
 
+}
+
+#Preview {
+    GHAlertVC(title: "Alert", message: "Something has happened", buttonTitle: "Ok")
 }

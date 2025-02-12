@@ -44,3 +44,7 @@ class GHButton: UIButton {
         configuration?.imagePlacement = .leading
     }
 }
+
+#Preview {
+    return GHButton(backgroundColour: .blue, title: "Test Button", systemImageName: "pencil")
+}

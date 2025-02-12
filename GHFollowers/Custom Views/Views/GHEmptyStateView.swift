@@ -34,7 +34,7 @@ class GHEmptyStateView: UIView {
     private func configureLogoImageView(){
         addSubview(logoImageView)
         
-        logoImageView.image = UIImage(named: Images.emptyStateLogo)
+        logoImageView.image = Images.emptyStateLogo
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         
         let logoBottomConstant: CGFloat = DeviceTypes.isiPhoneSE ? 80: 40

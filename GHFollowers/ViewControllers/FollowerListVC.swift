@@ -49,6 +49,20 @@ class FollowerListVC: GHDataLoadingVC {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    override func updateContentUnavailableConfiguration(using state: UIContentUnavailableConfigurationState) {
+        if followers.isEmpty && !isLoadingMoreFollowers {
+            var config = UIContentUnavailableConfiguration.empty()
+            config.image = .init(systemName: "person.slash")
+            config.text = "No Followers"
+            config.secondaryText = "This user has no followers."
+            contentUnavailableConfiguration = config
+        } else if isSearching && filteredFollowers.isEmpty{
+            contentUnavailableConfiguration = UIContentUnavailableConfiguration.search()
+        }else {
+            contentUnavailableConfiguration = nil
+        }
+    }
+    
     func configureViewController() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -87,18 +101,20 @@ class FollowerListVC: GHDataLoadingVC {
     
     func updateUI(with followers: [Follower]){
         if followers.count < NetworkManager.itemsPerPage { self.hasMoreFollowers = false }
-        
         self.followers.append(contentsOf: followers)
         
+        //Old custom empty state
+        /*
         if(self.followers.isEmpty){
             let message = "This user does not have any followers."
             DispatchQueue.main.async {
                 self.showEmptyStateView(with: message, in: self.view)
             }
             return
-        }
+        }*/
         
         self.updateData(on: self.followers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
     
     func configureCollectionView(){
@@ -210,6 +226,7 @@ extension FollowerListVC: UISearchResultsUpdating {
             isSearching = false
             filteredFollowers.removeAll()
             updateData(on: followers)
+            setNeedsUpdateContentUnavailableConfiguration()
             return
         }
         
@@ -218,6 +235,7 @@ extension FollowerListVC: UISearchResultsUpdating {
         filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) } //this is effectively a map reduce function but in a closure aka lambda
         //$0 is the item in the map reduce aka follower, we grab the login, lowercase it and check if it contains the filter text also lowercased
         updateData(on: filteredFollowers)
+        setNeedsUpdateContentUnavailableConfiguration()
     }
     
 }
